@@ -4,15 +4,20 @@
 
 const movies = ref();
 
-onMounted(async () => {
+const fetchMovies = async () => {
   const response = await axios.get('http://localhost/wr506/api/movies');
   movies.value = response.data['hydra:member'];
+}
+
+onMounted(async () => {
+  await fetchMovies();
 })
 
 </script>
 
 <template>
   <h1>Movies List</h1>
+  <RouterLink to="/movies/add">Add</RouterLink>
   <ul v-if="movies">
     <li v-for="movie in movies">
       {{ movie.title }}
