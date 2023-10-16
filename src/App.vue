@@ -8,7 +8,7 @@ import { RouterLink, RouterView } from 'vue-router'
         <RouterLink to="/movies">Movies</RouterLink>
 <!--        <RouterLink to="/actors">Actors</RouterLink>-->
       </nav>
-  <RouterView />
+  <RouterView :key="$route.path" />
 </template>
 
 <style scoped>

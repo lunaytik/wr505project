@@ -92,6 +92,7 @@ const sendMovieData = () => {
           v-model="fields.actor"
           :options="actors"
           :multiple="true"
+          :close-on-select="false"
           placeholder="Pick some"
           :custom-label="({firstName, lastName}) => `${firstName} ${lastName}`"
           track-by="@id"
