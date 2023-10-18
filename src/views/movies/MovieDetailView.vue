@@ -1,21 +1,16 @@
 <script setup>
-import {ref, onMounted, watch} from "vue";
-import axios from "axios";
+import { ref, onMounted } from "vue";
 import MovieCard from "@/components/movies/MovieCard.vue";
-import {useRoute} from "vue-router";
-import router from "@/router";
-
+import { useRoute } from "vue-router";
+import { getMovie } from "../../entities/movies/moviesProvider";
 
 const route = useRoute();
 const id = route.params.id;
 const movie = ref();
 
-console.log(route);
-
 const fetchMovie = async () => {
-  const response = await axios.get(`http://localhost/wr506/api/movies/${id}`);
+  const response = await getMovie(id);
   movie.value = response.data;
-  console.log(movie.value);
 }
 
 onMounted(async () => {

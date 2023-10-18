@@ -1,20 +1,30 @@
 <script setup>
-import {ref, onMounted, reactive} from "vue";
-import axios from "axios";
-import VueMultiselect from 'vue-multiselect/src/Multiselect.vue'
-import router from "@/router";
-
 const props = defineProps({
   movie: Object
 })
 </script>
 
 <template>
-  <h2>{{ movie.title }}</h2>
-  <p>{{ movie.description }}</p>
-  <small>{{ movie.duration }} minutes</small>
-  <br>
-  <small>Released : {{ movie.releaseDate.split('T')[0] }}</small>
-  <br>
-  <small>{{ movie.category.name }}</small>
+  <ElCard :body-style="{ padding: '0px' }">
+    <ElImage
+        :src="'http://localhost/wr506' + movie.poster"
+        class="image"
+        :alt="movie.title"
+        fit="cover"
+    />
+    <div style="padding: 14px">
+      <span>{{ movie.title }}</span>
+      <div class="bottom">
+        <time class="time">{{ movie.releaseDate.split('T')[0] }}</time>
+        <el-button text class="button">Operating</el-button>
+      </div>
+    </div>
+  </ElCard>
 </template>
+
+<style scoped>
+  .image {
+    height: 320px;
+    width: 200px;
+  }
+</style>

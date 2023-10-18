@@ -1,15 +1,15 @@
 <script setup>
-import {ref, onMounted} from "vue";
-import axios from "axios";
-import {useRoute} from "vue-router"
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router"
 import MovieForm from "@/components/movies/MovieForm.vue";
+import { getMovie } from "../../entities/movies/moviesProvider";
 
 const route = useRoute();
 const id = route.params.id;
 const movie = ref();
 
 onMounted(async () => {
-  const response = await axios.get(`http://localhost/wr506/api/movies/${id}`);
+  const response = await getMovie(id);
   movie.value = response.data;
 });
 </script>

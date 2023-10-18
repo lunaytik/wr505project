@@ -1,8 +1,9 @@
 <script setup>
 import {ref, onMounted, reactive} from "vue";
-import axios from "axios";
 import VueMultiselect from 'vue-multiselect/src/Multiselect.vue'
-import router from "@/router";
+import { createMovie, updateMovie } from "../../entities/movies/moviesProvider";
+import { getAllActors } from "../../entities/actors/actorsProvider";
+import { getAllCategories } from "../../entities/categories/categoriesProvider";
 
 const props = defineProps({
   movie: Object
@@ -21,10 +22,10 @@ const actors = ref();
 const categories = ref();
 
 onMounted(async () => {
-  const resp = await axios.get('http://localhost/wr506/api/actors');
+  const resp = await getAllActors();
   actors.value = resp.data['hydra:member'];
 
-  const r = await axios.get('http://localhost/wr506/api/categories');
+  const r = await getAllCategories();
   categories.value = r.data['hydra:member'];
 
   if (props.movie) {
@@ -51,17 +52,10 @@ const sendMovieData = () => {
   fields.actor.forEach((act) => actorArr.push(act['@id']));
   body.actor = actorArr;
 
-
   if (props.movie) {
-    axios.put(`http://localhost/wr506/api/movies/${props.movie.id}`, body)
-        .then(() => {
-          router.go(-1);
-        })
+    updateMovie(props.movie.id, body);
   } else {
-    axios.post('http://localhost/wr506/api/movies', body)
-        .then(() => {
-          router.go(-1);
-        })
+    createMovie(body);
   }
 
 }

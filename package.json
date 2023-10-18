@@ -9,12 +9,15 @@
   },
   "dependencies": {
     "axios": "^1.5.1",
+    "element-plus": "^2.4.0",
     "vue": "^3.3.4",
     "vue-multiselect": "^3.0.0-beta.2",
     "vue-router": "^4.2.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.3.4",
+    "unplugin-auto-import": "^0.16.6",
+    "unplugin-vue-components": "^0.25.2",
     "vite": "^4.4.9"
   }
 }

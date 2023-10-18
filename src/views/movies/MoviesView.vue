@@ -1,56 +1,68 @@
 <script setup>
 import {ref, onMounted, watch} from "vue";
-  import axios from "axios";
+import {getMovies, getMoviesByTitle} from "../../entities/movies/moviesProvider";
+import MovieCard from "@/components/movies/MovieCard.vue";
 
 const movies = ref();
 const page = ref(1);
 const lastPage = ref(1);
-
 const search = ref('');
 
 watch(page, () => {
-  page.value <= 0 ? page.value = 0 : fetchMovies();
+  page.value <= 0 ? page.value = 0 : search.value.length != 0 ? searchByMovieName() : fetchMovies();
 })
 
 const fetchMovies = async () => {
-  const response = await axios.get(`http://localhost/wr506/api/movies?page=${page.value}`);
+  const response = await getMovies(page.value);
   movies.value = response.data['hydra:member'];
-  lastPage.value = response.data['hydra:view']['hydra:last'].slice(-1);
+
+  if (response.data['hydra:view']['hydra:last']) {
+    lastPage.value = response.data['hydra:view']['hydra:last'].slice(-1);
+  }
 }
 
 onMounted(async () => {
   await fetchMovies();
 })
 
-const searchByMovieName = async () => {
-  page.value = 1;
+const searchByMovieName = async (input = false) => {
+  if (input) {
+    page.value = 1;
+    lastPage.value = 1;
+  }
 
-  const response = await axios.get(`http://localhost/wr506/api/movies?page=${page.value}&title=${search.value}`);
+  const response = await getMoviesByTitle(page.value, search.value);
   movies.value = response.data['hydra:member'];
 
-  console.log(response.data);
+  if (response.data['hydra:view']['hydra:last']) {
+    lastPage.value = response.data['hydra:view']['hydra:last'].slice(-1);
+  }
 }
 
 </script>
 
 <template>
   <h1>Movies List</h1>
-  <RouterLink to="/movies/add">Add</RouterLink>
-  <input type="text" name="search" id="search" v-model="search" @input="searchByMovieName">
-  <div>
-    <button @click="page--" :disabled="page == 1">Previous</button>
-    <small>Page {{ page }}</small>
-    <button @click="page++" :disabled="lastPage == page">Next</button>
-  </div>
-  <ul v-if="movies">
-    <li v-for="movie in movies">
-      <RouterLink :to="{ name: 'movie-detail', params: { id: movie.id } }">{{ movie.title }}</RouterLink> -
-      <RouterLink :to="{ name: 'movie-edit', params: { id: movie.id } }">Edit</RouterLink> |
-<!--      <RouterLink :to="{ name: 'movie-delete', params: { id: movie.id } }">Delete</RouterLink>-->
-    </li>
-  </ul>
+  <ElRow justify="center">
+    <ElSpace :size="8" direction="vertical">
+      <RouterLink to="/movies/add">Add</RouterLink>
+      <ElInput :clearable="true" type="text" name="search" v-model="search" @input="searchByMovieName(true)"/>
+      <ElSpace size="medium">
+        <ElButton @click="page--" :disabled="page == 1">Previous</ElButton>
+        <ElText size="small">Page {{ page }}</ElText>
+        <ElButton @click="page++" :disabled="lastPage == page">Next</ElButton>
+      </ElSpace>
+    </ElSpace>
+  </ElRow>
+  <ElRow class="gu" v-if="movies" justify="center">
+    <RouterLink :to="{'movie-detail', params: {id: }}" v-for="movie in movies">
+      <MovieCard :movie="movie" />
+    </RouterLink>
+  </ElRow>
 </template>
 
-<style>
-
+<style scoped>
+  .gu {
+    gap: 12px;
+  }
 </style>
