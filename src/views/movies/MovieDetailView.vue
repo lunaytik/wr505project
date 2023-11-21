@@ -2,6 +2,7 @@
 import { ref, onMounted } from "vue";
 import MovieCard from "@/components/movies/MovieCard.vue";
 import { useRoute } from "vue-router";
+import router from "@/router";
 import { getMovie } from "../../entities/movies/moviesProvider";
 
 const route = useRoute();
@@ -15,12 +16,15 @@ const fetchMovie = async () => {
 
 onMounted(async () => {
   await fetchMovie();
-})
+});
+
+const goBack = () => router.go(-1);
 
 </script>
 
 <template>
   <template v-if="movie">
+    <ElButton @click="goBack">Back</ElButton>
     <MovieCard :movie="movie"/>
   </template>
 </template>

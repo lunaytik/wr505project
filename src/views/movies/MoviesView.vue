@@ -55,8 +55,8 @@ const searchByMovieName = async (input = false) => {
     </ElSpace>
   </ElRow>
   <ElRow class="gu" v-if="movies" justify="center">
-    <RouterLink :to="{'movie-detail', params: {id: }}" v-for="movie in movies">
-      <MovieCard :movie="movie" />
+    <RouterLink :to="{ name: 'movie-detail', params: { id: movie.id } }" v-for="movie in movies" class="td-none hover-anim">
+      <MovieCard :movie="movie"/>
     </RouterLink>
   </ElRow>
 </template>
@@ -64,5 +64,14 @@ const searchByMovieName = async (input = false) => {
 <style scoped>
   .gu {
     gap: 12px;
+  }
+
+  .hover-anim:hover {
+    transition: all .5s;
+    opacity: .8;
+  }
+
+  .td-none {
+    text-decoration: none;
   }
 </style>

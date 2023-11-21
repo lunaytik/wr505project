@@ -9,6 +9,7 @@ import ActorDetailView from "@/views/actors/ActorDetailView.vue";
 import ActorEditView from "@/views/actors/ActorEditView.vue";
 import ActorAddView from "@/views/actors/ActorAddView.vue";
 import ActorDeleteView from "@/views/actors/ActorDeleteView.vue";
+import LoginView from "@/views/users/LoginView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -67,6 +68,11 @@ const router = createRouter({
       path: '/actors/:id/delete',
       name: 'actor-delete',
       component: ActorDeleteView,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView
     }
   ]
 })

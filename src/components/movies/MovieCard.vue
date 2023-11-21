@@ -16,7 +16,6 @@ const props = defineProps({
       <span>{{ movie.title }}</span>
       <div class="bottom">
         <time class="time">{{ movie.releaseDate.split('T')[0] }}</time>
-        <el-button text class="button">Operating</el-button>
       </div>
     </div>
   </ElCard>
